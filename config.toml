@@ -1,0 +1,100 @@
+baseurl = "/"
+title = "Brandon LeBeau"
+author = "Brandon LeBeau"
+relativeurls = true
+languageCode = "en-us"
+paginate = 3
+theme = "hugo-finite"
+googleAnalytics = "UA-43425299-2"
+disqusShortname = "brandonlebeau"
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+
+[permalinks]
+    post = "/:year/:month/:day/:slug/"
+
+[params]
+
+# Date format (refer to Go's date format: http://flippinggodateformat.com)
+# Examples: "Mon, Jan 2, 2006" or "2006-01-02"
+date_format = "January 2, 2006"
+
+# Publications can have a Params.publication for citation references.
+# Publications can have a Params.kind, such as "book".
+# Both parameters are mapped to an icon in partials/pub-icon.html.
+
+bio_full = ""
+bio_twitter = "blebeau11"
+
+# Title of posts section on main page.
+posts_title = "Educate-R"
+
+# Number of posts to show on main page.
+posts_count = 3
+
+# Title of publications section on main page.
+#pubs_title = "Publications"
+
+# Number of publications to show on main page.
+pubs_count = 4
+
+[[params.education]]
+  course = "Ph.D. Quantitative Methods in Education"
+  institution = "University of Minnesota"
+  year = 2013
+
+[[params.social]]
+  icon = "university"
+  icon_pack = "fa"
+  link = "https://education.uiowa.edu/academic-programs/educational-measurement-and-statistics"
+text = "Educational Measurement and Statistics, University of Iowa, Iowa City 52242."
+
+[[params.social]]
+  icon = "envelope"
+  icon_pack = "fa"
+  link = "mailto:brandon-lebeau@uiowa.edu"
+  text = "brandon-lebeau@uiowa.edu"
+
+[[params.social]]
+  icon = "twitter"
+  icon_pack = "fa"
+  link = "https://twitter.com/blebeau11"
+  text = "@blebeau11"
+  site = "Twitter"
+
+[[params.social]]
+  icon = "github"
+  icon_pack = "fa"
+  link = "//https://github.com/lebebr01"
+  text = "lebebr01"
+  site = "GitHub"
+
+
+
+# Navigation Links
+# The weight parameter defines the order that the links will appear in.
+
+    [[menu.main]]
+      name = "R Packages"
+      url = "/packages/"
+      weight = 5
+
+    [[menu.main]]
+      name = "Publications"
+      url = "/publication/"
+      weight = 3
+
+    [[menu.main]]
+      name = "Presentations"
+      url = "/slides/"
+      weight = 4
+
+[[menu.main]]
+  name = "Educate-R"
+  url = "/post/"
+  weight = 2
+
+[[menu.main]]
+  name = "About"
+  url = "/about/"
+  weight = 6
+

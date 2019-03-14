@@ -1,0 +1,93 @@
+---
+title: "simglm submission to CRAN this week"
+author: "Brandon LeBeau"
+date: 2017-05-23
+categories: ["r", "simglm", "package"]
+---
+
+
+
+<p>This is a quick note looking for any further feedback on the simglm package prior to CRAN submission later this week. The goal is to submit Thursday or Friday this week. The last few documentation finishing touches are happening now working toward a version 0.5.0 release on CRAN.</p>
+<p>For those who have not seen this package yet, the aim is to simulate regression models (single level and multilevel models) as well as employ empirical power analyses based on Monte Carlo simulation. The package is relatively flexible in user control of inputs to generate data.</p>
+<p>To install the package and also build the vignettes:</p>
+<pre class="r"><code>devtools::install_github(&quot;lebebr01/simglm&quot;, build_vignettes = TRUE)</code></pre>
+<p>Then to generate a simple single level data set.</p>
+<pre class="r"><code>library(simglm)
+
+fixed &lt;- ~ 1 + act + diff + numCourse + act:numCourse
+fixed_param &lt;- c(2, 4, 1, 3.5, 2)
+cov_param &lt;- list(dist_fun = c(&#39;rnorm&#39;, &#39;rnorm&#39;, &#39;rnorm&#39;), 
+                  var_type = c(&quot;single&quot;, &quot;single&quot;, &quot;single&quot;),
+                  cov_param = list(list(mean = 0, sd = 4),
+                                   list(mean = 0, sd = 3),
+                                   list(mean = 0, sd = 3)))
+n &lt;- 150
+error_var &lt;- 3
+with_err_gen = &#39;rnorm&#39;
+temp_single &lt;- sim_reg(fixed = fixed, fixed_param = fixed_param, 
+                       cov_param = cov_param,
+                       n = n, error_var = error_var, 
+                       with_err_gen = with_err_gen, 
+                       data_str = &quot;single&quot;)
+head(temp_single)</code></pre>
+<pre><code>##   X.Intercept.        act       diff  numCourse act.numCourse      Fbeta
+## 1            1 -0.3857065  0.6625498 -0.8168829     0.3150771 -1.1092123
+## 2            1  1.1207835 -0.9450005 -0.1527948    -0.1712499  4.6608519
+## 3            1  0.7479028  1.2972012 -1.1031558    -0.8250533  0.7776605
+## 4            1  0.4119463 -1.8764176 -0.9931081    -0.4091072 -2.5227252
+## 5            1 -1.4495529 -0.2441158  1.0915913    -1.5823193 -3.3863967
+## 6            1 -1.3291512 -0.7116835  0.5894711    -0.7834962 -3.5321317
+##           err  sim_data ID
+## 1 -1.08761933 -2.196832  1
+## 2  2.89792780  7.558780  2
+## 3  0.94281068  1.720471  3
+## 4  0.02035522 -2.502370  4
+## 5  0.16209552 -3.224301  5
+## 6  0.06859135 -3.463540  6</code></pre>
+<p>Then one can extend this to conduct of power analysis. The benefit of this approach is that you are able to generate data that hopefully more closely resembles data that is to be collected and can also evaluate assumption violations, sample size differences, and other conditions directly into the power analysis similar to a Monte Carlo simulation.</p>
+<pre class="r"><code>fixed &lt;- ~ 1 + act + diff + numCourse + act:numCourse
+fixed_param &lt;- c(0.5, 1.1, 0.6, 0.9, 1.1)
+cov_param &lt;- list(dist_fun = c(&#39;rnorm&#39;, &#39;rnorm&#39;, &#39;rnorm&#39;), 
+                  var_type = c(&quot;single&quot;, &quot;single&quot;, &quot;single&quot;),
+                  opts = list(list(mean = 0, sd = 2),
+                              list(mean = 0, sd = 2),
+                              list(mean = 0, sd = 1)))
+n &lt;- NULL
+error_var &lt;- NULL
+with_err_gen &lt;- &#39;rnorm&#39;
+pow_param &lt;- c(&#39;(Intercept)&#39;, &#39;act&#39;, &#39;diff&#39;, &#39;numCourse&#39;)
+alpha &lt;- .01
+pow_dist &lt;- &quot;t&quot;
+pow_tail &lt;- 2
+replicates &lt;- 10
+terms_vary &lt;- list(n = c(20, 40, 60, 80, 100), error_var = c(5, 10, 20),
+                   fixed_param = list(c(0.5, 1.1, 0.6, 0.9, 1.1), 
+                                      c(0.6, 1.1, 0.6, 0.9, 1.1)),
+                cov_param = list(list(dist_fun = c(&#39;rnorm&#39;, &#39;rnorm&#39;, &#39;rnorm&#39;),
+                                       mean = c(0, 0, 0), sd = c(2, 2, 1), 
+                                  var_type = c(&quot;single&quot;, &quot;single&quot;, &quot;single&quot;)),
+                                  list(dist_fun = c(&#39;rnorm&#39;, &#39;rnorm&#39;, &#39;rnorm&#39;),
+                                       mean = c(0.5, 0, 0), sd = c(2, 2, 1), 
+                                  var_type = c(&quot;single&quot;, &quot;single&quot;, &quot;single&quot;))
+                                  )
+                   )
+power_out &lt;- sim_pow(fixed = fixed, fixed_param = fixed_param, 
+                     cov_param = cov_param,
+                     n = n, error_var = error_var, with_err_gen = with_err_gen, 
+                     data_str = &quot;single&quot;, pow_param = pow_param, alpha = alpha,
+                     pow_dist = pow_dist, pow_tail = pow_tail, 
+                     replicates = replicates, terms_vary = terms_vary)
+head(power_out)</code></pre>
+<pre><code>## # A tibble: 6 x 13
+## # Groups:   term, n, error_var, fixed_param [3]
+##   term      n error_var fixed_param cov_param avg_test_stat sd_test_stat
+##   &lt;chr&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;fct&gt;       &lt;fct&gt;             &lt;dbl&gt;        &lt;dbl&gt;
+## 1 (Int…    20         5 0.5,1.1,0.… &quot;c(\&quot;rno…         0.736        0.515
+## 2 (Int…    20         5 0.5,1.1,0.… &quot;c(\&quot;rno…         0.778        0.425
+## 3 (Int…    20         5 0.6,1.1,0.… &quot;c(\&quot;rno…         0.761        0.557
+## 4 (Int…    20         5 0.6,1.1,0.… &quot;c(\&quot;rno…         0.770        0.708
+## 5 (Int…    20        10 0.5,1.1,0.… &quot;c(\&quot;rno…         0.866        0.612
+## 6 (Int…    20        10 0.5,1.1,0.… &quot;c(\&quot;rno…         0.371        0.818
+## # … with 6 more variables: avg_std_err &lt;dbl&gt;, sd_std_err &lt;dbl&gt;,
+## #   power &lt;dbl&gt;, num_reject &lt;dbl&gt;, num_repl &lt;dbl&gt;, data &lt;list&gt;</code></pre>
+<p>Questions and feedback are welcomed by filing an issue on GitHub here: <a href="https://github.com/lebebr01/simglm/issues" class="uri">https://github.com/lebebr01/simglm/issues</a>.</p>
