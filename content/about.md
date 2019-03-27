@@ -1,5 +1,6 @@
 ---
 title: "About"
+date: 2019-03-18
 ---
 
 I am currently an Assistant Professor of [Educational Measurement and Statistics](http://www.education.uiowa.edu/pq/measstat) at the [University of Iowa](http://www.uiowa.edu/). I was previously a Visiting Assistant Professor in the [Educational Statistics and Research Methods](http://edfd.uark.edu/) program at the [University of Arkansas](http://uark.edu) in Fayetteville, Arkansas. I also spent time at [Saint Paul Public Schools](http://www.spps.org) as an Assessment Specialist in the Research, Evaluation, and Assessment department.

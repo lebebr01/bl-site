@@ -12,6 +12,12 @@
     <link rel="stylesheet" href="{{ .Site.BaseURL }}css/academicons.min.css">
     <link rel="stylesheet" href="{{ .Site.BaseURL }}css/fonts.css">
     <link rel="stylesheet" href="{{ .Site.BaseURL }}css/finite.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css">
+<link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700">
+
+        <link rel="stylesheet" href="{{ .Site.BaseURL }}css/custom.css">
     {{ end }}
   </head>
   <body>
@@ -19,7 +25,7 @@
     <header>
       <nav class="nav-bar">
 	<!-- The title bar is used for small sizes.  -->
-	  <div class="title-bar" data-responsive-toggle="site-menu" data-hide-for="medium">	      
+	  <div class="title-bar" data-responsive-toggle="site-menu" data-hide-for="medium">
 	    <button class="site-hamburger" type="button" data-toggle>
 	      <i class="fa fa-bars fa-lg" aria-hidden="true"></i>
 	    </button>
@@ -31,9 +37,9 @@
 	      {{ end }}
 	    </div>
 	  </div>
-	    
+
 	  <!-- The top bar is used for medium and up.  -->
-	    <div class="top-bar" id="site-menu" >	      
+	    <div class="top-bar" id="site-menu" >
 	      <div class="top-bar-title show-for-medium site-title">
 		<a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
 	      </div>

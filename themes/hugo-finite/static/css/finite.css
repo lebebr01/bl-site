@@ -22,6 +22,7 @@ body {
     cursor: pointer;
 }
 
+
 .nav-bar {
     font-family: 'WorkSans', sans;
     text-transform: uppercase;
@@ -52,7 +53,7 @@ body {
 
 
 /* Last footer.  */
-.endofpage { 
+.endofpage {
     /* background-image: url("/img/wave.png"); */
     background-color: #101730;
     height: 50px;
@@ -76,7 +77,7 @@ a
 a:hover,
 a:focus {
     color: #2199e8;
-    border-color: #2199e8; 
+    border-color: #2199e8;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -213,7 +214,7 @@ ul.taxonomy-terms {
 
 .button.hollow.primary {
     font-family: 'WorkSans', sans;
-    text-transform: uppercase;  
+    text-transform: uppercase;
     border: 1px solid #101730;
     color: #101730;
     transition: none;

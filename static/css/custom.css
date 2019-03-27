@@ -1,0 +1,18 @@
+/* Specify in CSS */
+pre > code {
+  font-family: 'Fira Code', monospace;
+}
+
+body {
+  font-family: 'Source Sans Pro', 'Merriweather';
+}
+
+
+
+.whatisthis hr {
+    border-style: solid;
+    border-color: #101730;
+    border-width: 2px;
+}
+
+a:hover {text-decoration:underline;}

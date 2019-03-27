@@ -1,0 +1,9 @@
+.Rproj.user
+public/
+.Rhistory
+.RData
+.Ruserdata
+Thumbs.db
+
+*.knit.md
+*.utf8.md
