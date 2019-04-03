@@ -98,3 +98,8 @@ text = "Educational Measurement and Statistics, University of Iowa, Iowa City 52
   url = "/about/"
   weight = 6
 
+[outputFormats.Reveal]
+baseName = "index"
+mediaType = "text/html"
+isHTML = true
+
