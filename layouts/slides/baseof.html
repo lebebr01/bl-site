@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="{{ .Site.BaseURL }}css/academicons.min.css">
     <link rel="stylesheet" href="{{ .Site.BaseURL }}css/fonts.css">
     <link rel="stylesheet" href="{{ .Site.BaseURL }}css/finite.css">
-    <link rel="stylesheet" href="{{ .Site.BaseURL }}revealjs/css/reveal.css">
-	<link rel="stylesheet" href="{{ .Site.BaseURL }}revealjs/css/theme/simple.css" id="theme">
-	<link rel="stylesheet" href="{{ .Site.BaseURL }}revealjs/lib/css/zenburn.css">
+    <link rel="stylesheet" href="{{ .Site.BaseURL }}reveal-js/css/reveal.css">
+	<link rel="stylesheet" href="{{ .Site.BaseURL }}reveal-js/css/theme/simple.css" id="theme">
+	<link rel="stylesheet" href="{{ .Site.BaseURL }}reveal-js/lib/css/zenburn.css">
 	 <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css">
 <link rel="stylesheet"
@@ -71,7 +71,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       var link = document.createElement( 'link' );
       link.rel = 'stylesheet';
       link.type = 'text/css';
-      link.href = window.location.search.match( /print-pdf/gi ) ? "{{ .Site.BaseURL }}reveal.js/css/print/pdf.css" : '"{{ .Site.BaseURL }}reveal.js/css/print/paper.css";
+      link.href = window.location.search.match( /print-pdf/gi ) ? "{{ .Site.BaseURL }}reveal-js/css/print/pdf.css" : '"{{ .Site.BaseURL }}reveal-js/css/print/paper.css";
       document.getElementsByTagName( 'head' )[0].appendChild( link );
     </script>
     {{ end }}
