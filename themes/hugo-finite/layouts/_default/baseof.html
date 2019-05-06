@@ -19,6 +19,7 @@
 
         <link rel="stylesheet" href="{{ .Site.BaseURL }}css/custom.css">
     {{ end }}
+    {{ template "_internal/google_analytics.html" . }}
   </head>
   <body>
       {{ block "header" . }}

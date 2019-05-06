@@ -75,6 +75,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       document.getElementsByTagName( 'head' )[0].appendChild( link );
     </script>
     {{ end }}
+    {{ template "_internal/google_analytics.html" . }}
   </head>
   <body>
       {{ block "header" . }}
