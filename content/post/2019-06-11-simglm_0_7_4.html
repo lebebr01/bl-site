@@ -1,0 +1,214 @@
+---
+title: "simglm v0.7.4: Tidy Simulation"
+author: "Brandon LeBeau"
+date: 2019-06-11
+categories: ["r", "simglm", "simulation", "tidy"]
+slug: "simglm-0-7-4"
+---
+
+
+
+<p>I’m happy to formally announce a major update to the <a href="https://github.com/lebebr01/simglm">simglm</a> R package. In brief, the updated package contains a new more robust syntax for simulating data, adds parallel processing support for replicating the simulation (or power analysis) using the <code>future.apply</code> package/framework, and new updated vignettes showing off the many options available in the tidy simulation syntax.</p>
+<p>The package can be installed with the following code:</p>
+<pre class="r"><code>install.packages(&quot;simglm&quot;)</code></pre>
+<p>The package can then be loaded with:</p>
+<pre class="r"><code>library(simglm)</code></pre>
+<div id="tidy-simulation-syntax" class="section level2">
+<h2>Tidy simulation syntax</h2>
+<p>The tidy simulation syntax and new simulation functions take full advantage of using the pipe (i.e. <code>%&gt;%</code>) from the magrittr package to chain together commands for readable code that highlights what is being simulated and when. In this framework, the simulation arguments are specified outside of the simulation commands to separate the specification of how the data should be simulated from the actual simulation. An example is most useful here.</p>
+<div id="tidy-simulation-example" class="section level3">
+<h3>Tidy simulation example</h3>
+<p>Suppose we wanted to generate data for two groups, such as the sex of the individual (male or female). We could write this statistical model as the following:</p>
+<p><span class="math display">\[
+outcome = \beta_{0} + \beta_{1} male + \epsilon
+\]</span>
+where <span class="math inline">\(male\)</span> is an indicator (i.e. dichomotous or dummy variable) that represents if the individual is a male or not. The outcome is the observed score of interest, could be test scores, depression scores, blood pressure, really anything of interest. The regression coefficients, <span class="math inline">\(\beta_{0}\)</span> and <span class="math inline">\(\beta_{1}\)</span> are estimated from the data and would be the intercept (in this case would be the mean of the females on the outcome) and the mean difference between the males and females respectively. Finally, it is common to have error, represented with <span class="math inline">\(\epsilon\)</span>. This model is the linear regression version of a two-sample t-test.</p>
+<p>To simulate this data, the values for the regression coefficients (<span class="math inline">\(\beta_{0}\)</span> and <span class="math inline">\(\beta_{1}\)</span>) need to be specified, the <span class="math inline">\(male\)</span> indicator variable, and the variance and distribution of the error term. The outcome is then determined based on those three terms. Let’s now use simglm to simulate data based on this two group model.</p>
+</div>
+<div id="specify-simulation-arguments" class="section level3">
+<h3>Specify simulation arguments</h3>
+<p>When using the <code>simglm</code> R package, the simulation arguments are first defined in a named list object. Required arguments to this named list that include the following arguments with a short description of what each represents.</p>
+<ul>
+<li><code>formula</code>: This mimics the model to be generated excluding any random error. If you have used the <code>lm</code> function to fit a linear regression, this would be the model equation that is fitted to that function.</li>
+<li><code>fixed</code>: This includes variable specification as a list for the variable specified on the right hand side of the equation (i.e. to the right of the <code>~</code> in the <code>formula</code> argument). The <code>fixed</code> argument does not include the intercept or interaction terms.</li>
+<li><code>sample_size</code>: The sample size or in this example, the number of rows in the data.</li>
+<li><code>error</code>: This is a list of characteristics for the random error (i.e. variance, distribution, etc.), <span class="math inline">\(\epsilon\)</span> in the above equation.</li>
+<li><code>reg_weights</code>: These are the values for the <span class="math inline">\(\beta\)</span> terms in the model. In this example there are two, one for the intercept and one representing the mean difference between males and females.</li>
+</ul>
+<p>Below is an example specification for the linear model shown above that mimics a two-sample t-test.</p>
+<pre class="r"><code>sim_arguments &lt;- list(
+  formula = outcome ~ 1 + sex,
+  fixed = list(sex = list(var_type = &#39;factor&#39;, 
+                            levels = c(&#39;male&#39;, &#39;female&#39;))),
+  sample_size = 100,
+  error = list(variance = 1),
+  reg_weights = c(0, .15)
+)</code></pre>
+<p>From the above simulation arguments, the formula mimics the equation shown earlier with one small change, sex is used instead of male to reflect the grouping variable of male or female. The <code>fixed</code> argument warrants additional discussion. This argument is a named list where the named elements match the variable names specified on the right hand side of the <code>formula</code> argument. In this case, only one variable is specified, the sex variable. When specifying a variable, the type of variable to be generated is controlled with the argument, <code>var_type</code>. The <code>var_type</code> argument can take the following values:</p>
+<ul>
+<li><code>factor</code>: This represents a categorical or grouping variable that commonly only takes on a few unique values.</li>
+<li><code>continuous</code>: This is a continuous variable that is generated using an r distribution function.</li>
+<li><code>ordinal</code>: This generates ordinal or discrete data and is generated using the <code>sample</code> function.</li>
+<li><code>time</code>: This is not as useful here, but would be used when repeated measures or longitudinal data are simulated to represent when multiple observations are collected.</li>
+</ul>
+<p>Of note, the “factor” and “ordinal” variable types are generated the same way, using the <code>sample</code> function, but are distinguished due to different general philosophies about the two variable types.</p>
+<p>With “factor” and “ordinal” variable types, the different values that are possible for this variable can be specified with the <code>levels</code> argument. In the example above, “male” and “female” are passed as character strings indicating these are the values that will be passed to the <code>sample</code> function. The <code>levels</code> argument can take on characters or numeric values, although if character strings are meaningful, it is recommended to pass these to be more explicit about the different values generated.</p>
+<p>Let’s now generate the data based on the simulation arguments above.</p>
+</div>
+<div id="generate-one-data-set" class="section level3">
+<h3>Generate one data set</h3>
+<p>There are four main simulation functions that will be used most frequently when doing the simulating of data. These simulation functions include:</p>
+<ul>
+<li><code>simulate_fixed</code>: This function simulates the fixed portion of the model or the portion to the right of the <code>~</code> in the model formula.</li>
+<li><code>simulate_error</code>: This function simulates the random error (i.e. <span class="math inline">\(\epsilon\)</span>).</li>
+<li><code>simulate_randomeffect</code>: This simulates random effects if the data are nested or cross-classified. The use of this will come in another post soon.</li>
+<li><code>generate_response</code>: This function generates the outcome variable or the term to the left of the <code>~</code> in the model formula.</li>
+</ul>
+<p>The goal of each function is to simulate one aspect of the model which keeps the function specification simpler, allows users to see what is being simulated in specific steps, and allows users flexibility into what is being generated. Each of these functions take data as the first argument and the simulation arguments as the second argument. With the exception of the <code>generate_response</code> function, the three <code>simulate_*</code> function above can be specified in any order. The first time that a <code>simulate_*</code> function is called, the <code>data</code> argument needs to be specified as <code>NULL</code> meaning that no data has been generated.</p>
+<p>Below is one way to generate the data using the simulation conditions and the first few rows of the simulated data are shown. Note, the seed was specified with the <code>set.seed</code> function to ensure replicable results. Without setting a seed, different results would be obtained everytime the simulation code was run.</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## Registered S3 methods overwritten by &#39;ggplot2&#39;:
+##   method         from 
+##   [.quosures     rlang
+##   c.quosures     rlang
+##   print.quosures rlang</code></pre>
+<pre><code>## Registered S3 method overwritten by &#39;rvest&#39;:
+##   method            from
+##   read_xml.response xml2</code></pre>
+<pre><code>## ── Attaching packages ──────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.1.1       ✔ purrr   0.3.2  
+## ✔ tibble  2.1.1       ✔ dplyr   0.8.0.1
+## ✔ tidyr   0.8.3       ✔ stringr 1.4.0  
+## ✔ readr   1.3.1       ✔ forcats 0.4.0</code></pre>
+<pre><code>## ── Conflicts ─────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>set.seed(10)
+
+one_data_set &lt;- simulate_fixed(data = NULL, sim_arguments) %&gt;%
+  simulate_error(sim_arguments) %&gt;%
+  generate_response(sim_arguments)
+
+head(one_data_set)</code></pre>
+<pre><code>##   X.Intercept. sex   sex1 level1_id      error fixed_outcome
+## 1            1   1   male         1 -0.4006375          0.15
+## 2            1   1   male         2 -0.3345566          0.15
+## 3            1   0 female         3  1.3679540          0.00
+## 4            1   0 female         4  2.1377671          0.00
+## 5            1   0 female         5  0.5058193          0.00
+## 6            1   1   male         6  0.7863424          0.15
+##   random_effects    outcome
+## 1              0 -0.2506375
+## 2              0 -0.1845566
+## 3              0  1.3679540
+## 4              0  2.1377671
+## 5              0  0.5058193
+## 6              0  0.9363424</code></pre>
+<p>The data is similar regardless of the model run and the columns are appended based on the order that the <code>simulate_*</code> functions are called. For example, since the <code>simulate_fixed</code> function was called first above, these columns appear first in the simulated data. Then the error is shown and the outcome variable will always be last. In between the error and the outcome are two columns that can provide a check on various portions of the simulation. In this case, the “fixed_outcome” column is of most interest and can provide a check that the <code>simulate_fixed</code> function created data appropriately. The value for the “fixed_outcome” column should reflect the outcome for each row that does not depend on random quantities. In this case, since the only variable in the model is a dichotomous indicator variable, the “fixed_outcome” column should have two values, the mean for females and the mean for males.</p>
+<p>To ensure that things look as they should based on the simulation arguments, we can do some descriptive and/or visual inspection.</p>
+<div id="explore-error" class="section level4">
+<h4>Explore error</h4>
+<p>We can visualize the density of the random error term to ensure this makes sense.</p>
+<pre class="r"><code>ggplot(one_data_set, aes(x = error)) + 
+  geom_density() + 
+  theme_bw() + 
+  xlab(&quot;Random Error&quot;)</code></pre>
+<p><img src="/post/2019-06-11-simglm_0_7_4_files/figure-html/error-dist-1.png" width="672" /></p>
+<p>We could also calculate the variance of this term to ensure it is close to the value specified. The larger the sample size, the closer it should be to the variance specified. Here is happens to be slightly less than 1, but it is close.</p>
+<pre class="r"><code>one_data_set %&gt;%
+  summarise(error_var = var(error))</code></pre>
+<pre><code>##   error_var
+## 1 0.9402422</code></pre>
+</div>
+<div id="explore-sex-effect" class="section level4">
+<h4>Explore sex effect</h4>
+<p>The sex effect can also be explored. One simple check would be to count how many males and females are in the data. Note, I’m using the “sex1” variable which is the character version. The one named “sex” in the data represents the character variable turned into a numeric dummy variable used in the regression model.</p>
+<pre class="r"><code>one_data_set %&gt;%
+  count(sex1)</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   sex1       n
+##   &lt;fct&gt;  &lt;int&gt;
+## 1 female    47
+## 2 male      53</code></pre>
+<p>As can be seen, the number of males and females is about the same, but not exactly equal. The default behavior of the <code>sample</code> function is to generate groups with equal proportions. This can be specified directly however with an optional <code>prob</code> argument. See the <code>sample</code> function documentation for additional details for this.</p>
+<p>Another useful check is to see how different the outcome is for the two groups. I will do this visually, but you can do it descriptively as well by calculating the mean values.</p>
+<pre class="r"><code>ggplot(one_data_set, aes(x = sex1, y = outcome)) + 
+  geom_boxplot() + 
+  geom_jitter(alpha = 0.7) + 
+  theme_bw() + 
+  xlab(&quot;Sex&quot;) + 
+  ylab(&quot;Outcome&quot;)</code></pre>
+<p><img src="/post/2019-06-11-simglm_0_7_4_files/figure-html/sex-effect-1.png" width="672" /></p>
+<p>As you can see, the males have a larger median, but there is quite a bit of variation in the two groups.</p>
+</div>
+</div>
+<div id="replicate-the-simulation" class="section level3">
+<h3>Replicate the simulation</h3>
+<p>It is often common to generate multiple simulated data sets. This can be done with the help of a single function, <code>replicate_simulation</code>. This function takes the simulation arguments as its only argument. The only additional argument that needs to be specified is the number of replications which is controlled by the <code>replications</code> argument. Below is the inclusion of the replications argument to do 100 replications of the simulation arguments. Note, the <code>future.apply</code> package is used to simulate the data using all available cores on the local machine. This is done by setting <code>plan(multiprocess)</code> which should word regardless of the operating system this code is ran on.</p>
+<pre class="r"><code>library(future.apply)</code></pre>
+<pre><code>## Loading required package: future</code></pre>
+<pre class="r"><code>plan(multiprocess)
+
+simulation_arguments &lt;- list(
+  formula = outcome ~ 1 + sex,
+  fixed = list(sex = list(var_type = &#39;factor&#39;, 
+                            levels = c(&#39;male&#39;, &#39;female&#39;))),
+  sample_size = 100,
+  error = list(variance = 1),
+  reg_weights = c(0, .15),
+  replications = 100
+)
+
+replicate_sim &lt;- replicate_simulation(simulation_arguments)</code></pre>
+<p>The returned data element is a list that has the same length as the number of replications specified. The elements can be extracted as with any list.</p>
+<pre class="r"><code>head(replicate_sim[[100]])</code></pre>
+<pre><code>##   X.Intercept. sex   sex1 level1_id        error fixed_outcome
+## 1            1   0 female         1  0.187022849             0
+## 2            1   0 female         2 -0.437272777             0
+## 3            1   0 female         3 -1.251423754             0
+## 4            1   0 female         4 -1.472689530             0
+## 5            1   0 female         5 -0.164267110             0
+## 6            1   0 female         6 -0.004269461             0
+##   random_effects      outcome
+## 1              0  0.187022849
+## 2              0 -0.437272777
+## 3              0 -1.251423754
+## 4              0 -1.472689530
+## 5              0 -0.164267110
+## 6              0 -0.004269461</code></pre>
+<p>The <code>replication_simulation</code> function calls the specific <code>simulate_*</code> functions based on what is included in the simulation arguments. For example, if the <code>error</code> simulation argument was omitted, the data would not include random error.</p>
+<pre class="r"><code>simulation_arguments &lt;- list(
+  formula = outcome ~ 1 + sex,
+  fixed = list(sex = list(var_type = &#39;factor&#39;, 
+                            levels = c(&#39;male&#39;, &#39;female&#39;))),
+  sample_size = 100,
+  reg_weights = c(0, .15),
+  replications = 100
+)
+
+replicate_sim &lt;- replicate_simulation(simulation_arguments)
+
+head(replicate_sim[[1]])</code></pre>
+<pre><code>##   X.Intercept. sex   sex1 level1_id fixed_outcome random_effects error
+## 1            1   1   male         1          0.15              0     0
+## 2            1   1   male         2          0.15              0     0
+## 3            1   1   male         3          0.15              0     0
+## 4            1   1   male         4          0.15              0     0
+## 5            1   1   male         5          0.15              0     0
+## 6            1   0 female         6          0.00              0     0
+##   outcome
+## 1    0.15
+## 2    0.15
+## 3    0.15
+## 4    0.15
+## 5    0.15
+## 6    0.00</code></pre>
+<p>Notice that the error is specified as 0 for all records. This is likely not that as useful as specifying random error.</p>
+</div>
+</div>
+<div id="next-steps" class="section level2">
+<h2>Next Steps</h2>
+<p>I plan to regularly post examples using the <code>simglm</code> package for simulating different models and also doing power for different models. I recently wrote a tutorial that includes some of this code and does power by simulation that can be found here: <a href="https://brandonlebeau.org/publication/simglm-power/" class="uri">https://brandonlebeau.org/publication/simglm-power/</a>.</p>
+<p>More unit testing is needed for the new simulation syntax to test the new implementation and ensure that updates do not change other aspects of the code base. Implementing additional model features (such as increased support for GLM models, simulation non-linear models, etc) and writing about more examples of doing simulation or power analysis with the package.</p>
+<p>Feedback on the syntax, suggested changes, and edits or collaborations are especially welcomed at this stage. Issues and collaborations can be submitted through the following two links: <a href="https://github.com/lebebr01/simglm/issues">GitHub Issues</a> and <a href="https://github.com/lebebr01/simglm/pulls">Pull Requests</a>.</p>
+</div>
