@@ -8,7 +8,7 @@ image_preview: ""
 math: false
 publication: ""
 title: Power Analysis by Simulation using R and simglm
-url_code: ""
+url_code: "https://github.com/lebebr01/simglm_power"
 url_dataset: ""
 url_pdf: "https://ir.uiowa.edu/pq_pubs/3/"
 url_project: ""
