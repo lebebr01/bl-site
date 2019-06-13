@@ -4,6 +4,7 @@ author: "Brandon LeBeau"
 date: 2019-06-11
 categories: ["r", "simglm", "simulation", "tidy"]
 slug: "simglm-0-7-4"
+math: true
 ---
 
 I'm happy to formally announce a major update to the  [simglm](https://github.com/lebebr01/simglm) R package. In brief, the updated package contains a new more robust syntax for simulating data, adds parallel processing support for replicating the simulation (or power analysis) using the `future.apply` package/framework, and new updated vignettes showing off the many options available in the tidy simulation syntax. 
