@@ -146,9 +146,9 @@ head(one_data_set)</code></pre>
 <div id="replicate-the-simulation" class="section level3">
 <h3>Replicate the simulation</h3>
 <p>It is often common to generate multiple simulated data sets. This can be done with the help of a single function, <code>replicate_simulation</code>. This function takes the simulation arguments as its only argument. The only additional argument that needs to be specified is the number of replications which is controlled by the <code>replications</code> argument. Below is the inclusion of the replications argument to do 100 replications of the simulation arguments. Note, the <code>future.apply</code> package is used to simulate the data using all available cores on the local machine. This is done by setting <code>plan(multiprocess)</code> which should word regardless of the operating system this code is ran on.</p>
-<pre class="r"><code>library(future.apply)</code></pre>
-<pre><code>## Loading required package: future</code></pre>
-<pre class="r"><code>plan(multiprocess)
+<pre class="r"><code>library(future)
+
+plan(multiprocess)
 
 simulation_arguments &lt;- list(
   formula = outcome ~ 1 + sex,

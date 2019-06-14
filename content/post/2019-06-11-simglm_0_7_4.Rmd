@@ -141,7 +141,7 @@ As you can see, the males have a larger median, but there is quite a bit of vari
 It is often common to generate multiple simulated data sets. This can be done with the help of a single function, `replicate_simulation`. This function takes the simulation arguments as its only argument. The only additional argument that needs to be specified is the number of replications which is controlled by the `replications` argument. Below is the inclusion of the replications argument to do 100 replications of the simulation arguments. Note, the `future.apply` package is used to simulate the data using all available cores on the local machine. This is done by setting `plan(multiprocess)` which should word regardless of the operating system this code is ran on. 
 
 ```{r replicate-sim}
-library(future.apply)
+library(future)
 
 plan(multiprocess)
 
