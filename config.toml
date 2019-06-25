@@ -96,6 +96,11 @@ text = "Educational Measurement and Statistics, University of Iowa, Iowa City 52
 [[menu.main]]
   name = "About"
   url = "/about/"
+  weight = 7
+
+[[menu.main]]
+  name = "Workshops"
+  url = "/workshop/"
   weight = 6
 
 [outputFormats.Reveal]

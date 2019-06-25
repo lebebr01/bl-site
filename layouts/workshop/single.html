@@ -1,0 +1,41 @@
+{{ define "title-bar-right" }}
+{{ end }}
+{{ define "main" }}
+<div class="reveal">
+	<div class="slides">
+	<section data-markdown
+	  data-separator="\n\n\n"
+	  data-separator-vertical="\n\n\n\n"
+      data-separator-notes="^Note:"
+      data-charset="utf-8">
+	    {{ .RawContent }}
+	 </section>
+	</div>
+	</div>
+	<script src="{{ .Site.BaseURL }}reveal-js/lib/js/head.min.js"></script>
+	<script src="{{ .Site.BaseURL }}reveal-js/js/reveal.js"></script>
+	<script>
+		Reveal.initialize({
+			embedded: true,
+		        controls: false,
+        slideNumber: true,
+        center: true,
+        transition: 'fade',
+		        // theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+		        // Optional libraries used to extend on reveal.js
+		        dependencies: [
+		// Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+		{ src: "{{ .Site.BaseURL }}reveal-js/lib/js/classList.js", condition: function() { return !document.body.classList; } },
+
+		// Interpret Markdown in <section> elements
+		{ src: "{{ .Site.BaseURL }}reveal-js/plugin/markdown/marked.js", condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+		{ src: "{{ .Site.BaseURL }}reveal-js/plugin/markdown/markdown.js", condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+		// Zoom in and out with Alt+click
+		{ src: "{{ .Site.BaseURL }}reveal-js/plugin/zoom-js/zoom.js", async: true },
+
+		// Speaker notes
+		{ src: "{{ .Site.BaseURL }}reveal-js/plugin/notes/notes.js", async: true },
+	]
+		      });
+	</script>
+{{ end }}
