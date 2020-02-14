@@ -1,7 +1,7 @@
 ---
 title: "Measuring Psychological Constructs over a Developmental Span: Methodological Approaches"
 author: "Brandon LeBeau"
-date: "February 14, 2020"
+date: "2020-02-14"
 slug: "casma2020"
 tags: [slides, irt, above-level, high-achieving]
 ---
