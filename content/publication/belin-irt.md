@@ -5,15 +5,19 @@ authors:
 - "Susan G. Assouline"
 - Duhita Mahatmya
 - "Ann Lupkowski-Shoplik"
-date: 2019-06-01
+date: 2020-06-01
 image: ""
 image_preview: ""
 math: false
-publication: ""
+publication: "In *Gifted Child Quarterly*, 64 (3), 219-237
+title: "Development of Internalizing Problems From Adolescence to Emerging Adulthood: Accounting for Heterotypic Continuity With Vertical Scaling""
 title: "Differentiating Among Gifted Learners: A Comparison of Classical Test Theory and Item Response Theory on Above-Level Testing"
 url_code: ""
 url_dataset: ""
 url_pdf: "https://doi.org/10.17077/pp.004118"
+url_custom:
+- name: Link to Journal
+  url: https://doi.org/10.1177/0016986220924050
 url_project: ""
 url_slides: ""
 url_video: ""

@@ -5,14 +5,16 @@ authors:
 - "Susan G. Assouline"
 - "Ann Lupkowski-Shoplik"
 - Duhita Mahatmya
-date: 2019-03-01
+date: 2020-07-01
 image: ""
 image_preview: ""
 math: false
-publication: ""
+publication: "In *Roeper Review*"
 title: "The Advanced Placement Program in Rural Schools: Equalizing Opportunity"
 url_code: ""
 url_dataset: ""
+url_custom:
+- name: Link to Journal (coming soon)
 url_pdf: ""
 url_project: ""
 url_slides: ""
