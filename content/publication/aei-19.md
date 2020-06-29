@@ -12,6 +12,9 @@ math: false
 publication: In *Assessment for Effective Intervention*, (in press)
 title: "Examining High School Student Engagement and Critical Factors in Dropout Prevention"
 url_code: ""
+url_custom: 
+- name: Link to Journal
+  url: https://journals.sagepub.com/doi/abs/10.1177/1534508419859655
 url_dataset: ""
 url_pdf: ""
 url_project: ""
