@@ -4,7 +4,7 @@ authors:
 - "Brandon LeBeau" 
 - "Scott Ellison"
 - "Ariel M. Aloe"
-date: 2020-08-01
+date: 2020-06-01
 image: ""
 image_preview: ""
 math: false
