@@ -1,6 +1,6 @@
 ---
 title: "R Packages"
-date: 2019-03-18
+date: 2020-05-30
 ---
 [**simglm:**](https://simglm.brandonlebeau.org) [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/simglm)](https://cran.r-project.org/package=simglm) This package attempts to create a general syntax structure to simulate regression models, both single and multilevel models. The package also facilitates the power by simulation paradigm, including the ability to cross factors similar to a Monte Carlo simulation design.
 
