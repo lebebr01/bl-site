@@ -11,7 +11,7 @@ publication: ""
 title: "Evolution of Statistical Software and Quantitative Methods"
 url_code: 
 url_dataset: ""
-url_pdf: 
+url_pdf: "https://doi.org/10.17077/pp.005273"
 url_project: ""
 url_slides: ""
 url_video: ""
