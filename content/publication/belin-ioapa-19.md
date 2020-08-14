@@ -14,7 +14,8 @@ title: "The Advanced Placement Program in Rural Schools: Equalizing Opportunity"
 url_code: ""
 url_dataset: ""
 url_custom:
-- name: Link to Journal (coming soon)
+- name: Link to Journal
+  url: https://doi.org/10.1080/02783193.2020.1765923
 url_pdf: ""
 url_project: ""
 url_slides: ""

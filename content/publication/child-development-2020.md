@@ -12,7 +12,8 @@ publication: In *Child Development*
 title: "Creating a developmental scale to account for heterotypic continuity in development: A simulation study"
 url_code: ""
 url_custom:
-- name: Link to Journal (coming soon)
+- name: Link to Journal
+  url: https://dx.doi.org/10.1111/cdev.13433 
 url_dataset: ""
 url_pdf: ""
 url_project: ""
