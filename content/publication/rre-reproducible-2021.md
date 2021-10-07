@@ -12,7 +12,8 @@ publication: In *Review of Reseach in Education*
 title: "Reproducible Analyses in Educational Research"
 url_code: ""
 url_custom:
-- name: Link to Journal (coming soon)
+- name: Link to Journal
+  url: https://doi.org/10.3102%2F0091732X20985076
 url_dataset: ""
 url_pdf: ""
 url_project: ""
