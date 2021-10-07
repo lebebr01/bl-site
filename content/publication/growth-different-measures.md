@@ -7,7 +7,7 @@ date: 2020-06-01
 image: ""
 image_preview: ""
 math: false
-publication: ""
+publication: In *Journal of Abnormal Psychology*
 title: "Creating a Developmental Scale to Chart the Development of Psychopathology with Different Informants and Measures across Time"
 url_code: 
 url_dataset: ""

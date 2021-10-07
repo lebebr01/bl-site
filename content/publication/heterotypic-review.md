@@ -8,9 +8,12 @@ date: 2020-06-01
 image: ""
 image_preview: ""
 math: false
-publication: ""
+publication: In *Developmental Review*
 title: "Studying a Moving Target in Development: The Challenge and Opportunity of Heterotypic Continuity"
 url_code: 
+url_custom:
+- name: Link to Journal
+  url: https://doi.org/10.1016/j.dr.2020.100935
 url_dataset: ""
 url_pdf: 
 url_project: ""
