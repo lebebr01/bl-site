@@ -42,7 +42,7 @@ Photo by <a href="https://unsplash.com/@alefler?utm_source=unsplash&utm_medium=r
 
 # Not Reality
 
-![](figures/minh-pham-HI6gy-p-WBI-unsplash.jpg)
+![](/figs/minh-pham-HI6gy-p-WBI-unsplash.jpg)
 
 <p class="stext">
 Photo by <a href="https://unsplash.com/@minhphamdesign?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Minh Pham</a> on <a href="https://unsplash.com/s/photos/virtual-reality?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
@@ -112,7 +112,8 @@ Photo by <a href="https://unsplash.com/@nathananderson?utm_source=unsplash&utm_m
 
 # What is it?
 
-+ Cloud or server based computational environment for statistics/data science.
++ Cloud or server based computational environment for statistics/data science
++ Interact with computational environment in a **browser**
 + Embeds code with text
 + Jupyter Lab / Notebooks
     - Can run different kernels: R, Python, Julia
